@@ -18,7 +18,7 @@ Projekt został zrealizowany przy użyciu następujących technologii i bibliote
 - **Python 3.8+**
 - **Pandas** – manipulacja danymi
 - **NumPy** – obliczenia numeryczne
-- **Scikit-learn** – modele uczenia maszynowego i metryki ewaluacyjne
+- **Scikit-learn** – modele uczenia maszynowego i metryki ewaluacyjne.
 - **TensorFlow/Keras** – modele sieci neuronowych
 - **Matplotlib** – wizualizacja danych
 
