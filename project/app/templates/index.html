@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Predicted Efficiency</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* Styl ogólny strony */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f3f4f6;
+        }
+
+        .chart-container {
+            width: 80%;
+            max-width: 1200px;
+            margin: 0 auto 40px auto;
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .chart-wrapper {
+            margin-top: 20px;
+        }
+
+        h2 {
+            font-size: 24px;
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        canvas {
+            max-width: 100%;
+            height: 400px;
+        }
+    </style>
+</head>
+<body>
+    <div class="chart-container">
+        <h2>Solar Predicted Efficiency</h2>
+        <div class="chart-wrapper">
+            <canvas id="solarChart"></canvas>
+        </div>
+    </div>
+
+    <div class="chart-container">
+        <h2>Wind Predicted Efficiency</h2>
+        <div class="chart-wrapper">
+            <canvas id="windChart"></canvas>
+        </div>
+    </div>
+
+    <script>
+        async function fetchSolarData() {
+            const response = await fetch('/data');
+            return await response.json();
+        }
+
+        async function fetchWindData() {
+            const response = await fetch('/data_second');
+            return await response.json();
+        }
+
+        async function createCharts() {
+            // Pobierz dane dla solar
+            const solarData = await fetchSolarData();
+            const ctxSolar = document.getElementById('solarChart').getContext('2d');
+            new Chart(ctxSolar, {
+                type: 'line',
+                data: {
+                    labels: solarData.labels,
+                    datasets: [{
+                        label: 'Solar Predicted Efficiency',
+                        data: solarData.values,
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        borderWidth: 2,
+                        tension: 0.4,
+                        pointRadius: 4,
+                        pointBackgroundColor: 'rgba(75, 192, 192, 1)'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Date',
+                                color: '#555',
+                                font: { size: 14 }
+                            }
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'Predicted Efficiency',
+                                color: '#555',
+                                font: { size: 14 }
+                            },
+                            beginAtZero: true
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: true,
+                            labels: { color: '#555', font: { size: 14 } }
+                        }
+                    }
+                }
+            });
+
+            // Pobierz dane dla wind
+            const windData = await fetchWindData();
+            const ctxWind = document.getElementById('windChart').getContext('2d');
+            new Chart(ctxWind, {
+                type: 'line',
+                data: {
+                    labels: windData.labels,
+                    datasets: [{
+                        label: 'Wind Predicted Efficiency',
+                        data: windData.values,
+                        borderColor: 'rgba(153, 102, 255, 1)',
+                        backgroundColor: 'rgba(153, 102, 255, 0.2)',
+                        borderWidth: 2,
+                        tension: 0.4,
+                        pointRadius: 4,
+                        pointBackgroundColor: 'rgba(153, 102, 255, 1)'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Date',
+                                color: '#555',
+                                font: { size: 14 }
+                            }
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'Predicted Efficiency',
+                                color: '#555',
+                                font: { size: 14 }
+                            },
+                            beginAtZero: true
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: true,
+                            labels: { color: '#555', font: { size: 14 } }
+                        }
+                    }
+                }
+            });
+        }
+
+        createCharts();
+    </script>
+</body>
+</html>
